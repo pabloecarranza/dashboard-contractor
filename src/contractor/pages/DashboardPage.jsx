@@ -17,28 +17,37 @@ import {
 	RiFilter2Line,
 	RiSearchEyeLine,
 } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLogout } from './../../features/auth/thunks';
 
 export const DashboardPage = () => {
 	const [showMenu, setShowMenu] = useState(false);
-
+	const { displayName = '', photoURL = '' } = useSelector(
+		state => state.AuthSlice
+	);
+	const dispatch = useDispatch();
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
 	};
 
+	const onLogout = () => {
+		dispatch(startLogout());
+	};
+
 	return (
-		<div className='bg-[#141517]'>
+		<div className='bg-[#141517] animate__animated animate__fadeIn'>
 			{/* Sidebar */}
 			<sidebar
 				className={`bg-[#1E1F24] fixed ${
 					showMenu ? '-left-0' : '-left-full'
-				} lg:left-0 top-0 w-72 h-full p-8 flex flex-col justify-between transition-all overflow-y-scroll z-50`}
+				} lg:left-0 top-0 w-72 h-full p-8 flex flex-col justify-between transition-all overflow-hdden z-50`}
 			>
 				{/* Menu */}
 				<div>
 					{/* Logo */}
 					<div className='mb-8'>
 						<h1 className='text-white uppercase font-bold text-2xl tracking-[4px]'>
-							JT Logo
+							{displayName}
 						</h1>
 					</div>
 					{/* Nav */}
@@ -96,12 +105,13 @@ export const DashboardPage = () => {
 				</div>
 				{/* Logout */}
 				<div>
-					<a
+					<button
 						href='#'
 						className='flex items-center gap-4 text-gray-400 hover:text-gray-200 transition-colors'
+						onClick={onLogout}
 					>
 						<RiLogoutCircleRLine /> Logout
-					</a>
+					</button>
 				</div>
 			</sidebar>
 			{/* Btn menu movile */}
@@ -126,10 +136,10 @@ export const DashboardPage = () => {
 						<li>
 							<a href='#' className='flex text-white items-center gap-2'>
 								<img
-									src='https://img.freepik.com/foto-gratis/chica-romantica-sonrisa-astuta-blusa-vintage-sentada-cama-tocando-su-barbilla-mano-retrato-mujer-joven-linda-sonadora-flor-peinado-descansando-dormitorio-manana_197531-3187.jpg'
+									src={photoURL}
 									className='w-6 h-6 object-cover rounded-full ring-2 ring-gray-300'
 								/>
-								Ferra Alexandra
+								{displayName}
 								<RiArrowDownSLine />
 							</a>
 						</li>

@@ -1,7 +1,7 @@
 // eslint-disable-next-line react/prop-types
 export const AuthLayout = ({ children, title }) => {
 	return (
-		<div className='register flex flex-col min-h-screen  md:p-8'>
+		<div className='register flex flex-col min-h-screen  md:p-8  '>
 			<div className='p-8'>
 				<h1 className='text-gray-100 text-3xl font-medium tracking-widest'>
 					TRINITY Renovations
@@ -11,7 +11,7 @@ export const AuthLayout = ({ children, title }) => {
 				<h3 className='text-gray-500 uppercase text-sm font-bold mb-2'>
 					Ingresa a la plataforma
 				</h3>
-				<h1 className='text-6xl text-white font-medium mb-2'>
+				<h1 className='text-6xl text-white font-medium mb-2 animate__animated animate__fadeIn'>
 					{title}
 					<span className='text-cyan-500'>.</span>
 				</h1>

@@ -10,6 +10,7 @@ const FormData = {
 	password: '',
 	nombres: '',
 	apellidos: '',
+	displayName: '',
 };
 
 const formValidations = {
@@ -25,7 +26,8 @@ const formValidations = {
 const RegisterPage = () => {
 	const dispatch = useDispatch();
 	const [formSubmitted, setFromSubmitted] = useState(false);
-
+	const { status, errorMessage } = useSelector(state => state.AuthSlice);
+	const isCheckingAuth = useMemo(() => status === 'checking', [status]);
 	const {
 		email,
 		password,
@@ -49,12 +51,9 @@ const RegisterPage = () => {
 		dispatch(startCreatingUser(formState));
 	};
 
-	const { status } = useSelector(state => state.AuthSlice);
-	const isAuthenticating = useMemo(() => status === 'checking', [status]);
-
 	return (
 		<AuthLayout title='Registrate'>
-			<span className='text-gray-500 font-medium'>
+			<span className='text-gray-500 font-medium animate__animated animate__fadeIn'>
 				¿Ya tienes un usuario?{' '}
 				<Link
 					href='#'
@@ -64,7 +63,10 @@ const RegisterPage = () => {
 					Inicia sesión
 				</Link>
 			</span>
-			<form className='mt-8' onSubmit={onSubmit}>
+			<form
+				className='mt-8 animate__animated animate__fadeIn'
+				onSubmit={onSubmit}
+			>
 				<div className='max-w-lg mb-4 flex flex-row md:flex-row items-center justify-between gap-4'>
 					<input
 						type='text'
@@ -129,12 +131,28 @@ const RegisterPage = () => {
 					) : (
 						''
 					)}
+					{errorMessage ? (
+						<p
+							id='helper-text-explanation'
+							className='mt-2 text-sm text-gray-500 dark:text-gray-400 mb-4'
+						>
+							<span
+								href='#'
+								className='font-medium text-cyan-500 hover:underline dark:text-red-500'
+							>
+								Error{' '}
+							</span>
+							{errorMessage}
+						</p>
+					) : (
+						''
+					)}
 				</div>
 				<div className='max-w-lg'>
 					<button
 						className='bg-cyan-600 text-white w-full py-3 px-4 rounded-full hover:bg-cyan-700 transition-colors'
 						type='submit'
-						disabled={isAuthenticating}
+						disabled={isCheckingAuth}
 					>
 						Crear Cuenta
 					</button>

@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { checkingCredentials } from '../../features/auth/authSlice';
 import { useForm } from '../../hooks/useForm';
 import { AuthLayout } from '../layout/AuthLayout';
-import { startGoogleSignIn } from './../../features/auth/thunks';
+import {
+	startGoogleSignIn,
+	startLoginWithEmailPassword,
+} from './../../features/auth/thunks';
 
 const formData = {
 	email: '',
@@ -29,13 +31,13 @@ const LoginPage = () => {
 		onInputChange,
 		emailValid,
 		passwordValid,
-		isFormValid,
+		formState,
 	} = useForm(formData, formValidations);
 
 	const onSubmit = event => {
 		event.preventDefault();
 		setFromSubmitted(true);
-		dispatch(checkingCredentials());
+		dispatch(startLoginWithEmailPassword(formState));
 	};
 
 	const onGoogleSignIn = event => {
@@ -43,12 +45,12 @@ const LoginPage = () => {
 		dispatch(startGoogleSignIn());
 	};
 
-	const { status } = useSelector(state => state.AuthSlice);
+	const { status, errorMessage } = useSelector(state => state.AuthSlice);
 	const isAuthenticating = useMemo(() => status === 'checking', [status]);
 
 	return (
 		<AuthLayout title='Inicia sesión'>
-			<span className='text-gray-500 font-medium'>
+			<span className='text-gray-500 font-medium animate__animated animate__fadeIn'>
 				¿No eres usuario?{' '}
 				<Link
 					href='#'
@@ -58,7 +60,7 @@ const LoginPage = () => {
 					Registrate
 				</Link>
 			</span>
-			<form className='mt-8'>
+			<form className='mt-8 animate__animated animate__fadeIn'>
 				<div className='max-w-lg mb-4'>
 					<input
 						type='email'
@@ -87,7 +89,7 @@ const LoginPage = () => {
 							id='helper-text-explanation'
 							className='mt-2 text-sm text-gray-500 dark:text-gray-400 mb-4'
 						>
-							{emailValid || passwordValid ? (
+							{emailValid || passwordValid || errorMessage ? (
 								<span
 									href='#'
 									className='font-medium text-cyan-500 hover:underline dark:text-red-500'
@@ -97,7 +99,7 @@ const LoginPage = () => {
 							) : (
 								''
 							)}
-							{emailValid || passwordValid}
+							{emailValid || passwordValid || errorMessage}
 						</p>
 					) : (
 						''
@@ -117,7 +119,7 @@ const LoginPage = () => {
 					>
 						Iniciar sesión
 					</button>
-					<p className='mt-2 text-sm text-gray-500 dark:text-gray-400 mb-4 text-center'>
+					<p className='mt-2 text-sm text-gray-500 dark:text-gray-400 mb-4 text-center pt-3'>
 						<span>Inicia sesión con </span>
 						<button
 							href='#'

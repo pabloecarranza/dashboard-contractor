@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+		"css": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
 		"preview": "vite preview"
 	},
 	"dependencies": {

@@ -22,9 +22,7 @@ import { startLogout } from './../../features/auth/thunks';
 
 export const DashboardPage = () => {
 	const [showMenu, setShowMenu] = useState(false);
-	const { displayName = '', photoURL = '' } = useSelector(
-		state => state.AuthSlice
-	);
+	const { displayName, photoURL } = useSelector(state => state.AuthSlice);
 	const dispatch = useDispatch();
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
